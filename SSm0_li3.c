@@ -257,7 +257,7 @@ double SSm0_li3logA1(double a)
   double xsq = x*x;
   return WTFccli3logA10 +
     x*(WTFccli3logA11 + xsq*WTFccli3logA13) +
-    WTFccli3logA1log*xsq*log(x) +
+    WTFccli3logA1log*xsq*log(fabs(x)) +
     SSm0_li3logA1rec(xsq, 0, xsq);
 }
 

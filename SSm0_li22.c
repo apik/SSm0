@@ -205,7 +205,7 @@ double li22re_stufflerec(double next, double extra, int nc, double b, double ab,
 
 double li22re_stuffle(double a, double b, int ncmax)
 {
-  check_range(a > 1.0, "li22re_stuffle a > 1");
+  /* check_range(a > 1.0, "li22re_stuffle a > 1"); */
   double ab = a*b;
   return -li22re_stufflerec(ab-b*li2re(a), ab*ab, 0, b, ab, ncmax);
 }
@@ -362,7 +362,8 @@ double li22re_li22x1(double x)
       + li_constants.li22x1c7*logomx + li_constants.li22x1c8;
 }
 
-double li22re_li22smallastuffle(double a, double b){
+double li22re_li22smallastuffle(double a, double b)
+{
   double ab = a*b;
   check_range(a > 1.0 && b > 1.0, "li22re_li22smallastuffle: a > 1.0 && b > 1.0");
   return li2re(a)*li2re(b)-li4re(ab)-li22re_smalla(b,a);
@@ -375,6 +376,56 @@ double li22re_li22xx(double x)
   double li2c = li2re(x);
   return 0.5*(li2c*li2c - li4re(xsq));
 }
+
+//This is Li22(1/y,y)
+static const double WTFli22iyyc1 = 9.86960440108935861883;  // Pi^2
+static const double WTFli22iyyc2 = -1.08232323371113819152;  // -Pi^4/90
+double li22re_li22iyy(double y)
+{
+  check_range(y > 0 && y<1, "li22re_li22iyy: y > 0 && y < 1");
+  if (y < 0)
+    {
+      double logc = log(-y);
+      double li2c = li2re(y);
+      return 3.*li4re(y) - 0.5*li2c*(li2c+logc*logc+WTFli22iyyc1) + WTFli22iyyc2;
+    }
+  else
+    {
+      double logy = log(y);
+      double logysq = logy*logy;
+      double li2y = li2re(y);
+      return 3.*li4re(y) - 0.5*( logysq*( WTFli22iyyc1 + li2y) + li2y*li2y) + WTFli22iyyc2 ;
+    }
+}
+
+
+//This is Li22(1,y)
+static const double WTFli221yc1 = 2.;
+static const double WTFli221yc2 = -2.;
+static const double WTFli221yc3 = -0.5;
+static const double WTFli221yc4 = 0.166666666666666666667;
+static const double WTFli221yc5 = -0.333333333333333333333;
+static const double WTFli221yc6 = -1.64493406684822643647;  // -Pi^2/6
+static const double WTFli221yc7 = 2.40411380631918857080; // 2*Zeta(3)
+static const double WTFli221yc8 = -2.16464646742227638303;  // -Pi^4/45
+static const double WTFli221yc9 = 1.64493406684822643647;  // Pi^2/6
+double li22re_li221y(double y)
+{
+  check_range(y > 1.0, "li22_li221y: y > 1.0");
+  double omy = 1.-y;
+  double logomy = log(omy);
+  double logomysq = logomy*logomy;
+  double arg1 = 1./omy;
+  double arg2 = -y/omy;
+  double li2y = li2re(y);
+  return WTFli221yc1*(li4re(arg1)+li4re(arg2)) + li4re(y) +
+    WTFli221yc2*li3re(y)*logomy +
+    (WTFli221yc9 + WTFli221yc3*li2y)*li2y +
+    logomysq*( WTFli221yc4*logomysq + WTFli221yc5*logomy*log(y) + WTFli221yc6) +
+    WTFli221yc7*logomy + WTFli221yc8;
+}
+
+
 
 
 
@@ -400,22 +451,23 @@ double li22re(double x, double y)
 
   /* Special cases X */
   else if (fabs(y - x)    < li_constants.epsdif)
-    return li22re_li22xx(x);          /* X (x=y) */
-  else if (fabs(y - 1./x) < li_constants.epsdif) region_unimplemented("X (y=1/x)");
+    return li22re_li22xx(x);     /* X (x=y) */
+  else if (fabs(y - 1./x) < li_constants.epsdif)
+    return li22re_li22iyy(y);    /* X (y=1/x) */
   else if (fabs(y - 1.)   < li_constants.epsdif)
-    return li22re_li22x1(x);  /* X (y=1) */
-  else if (fabs(x - 1.)   < li_constants.epsdif) region_unimplemented("X (x=1)");
-    /* return li22re_li221y(y);  /\* X (x=1) *\/ */
+    return li22re_li22x1(x);     /* X (y=1) */
+  else if (fabs(x - 1.)   < li_constants.epsdif)
+    return li22re_li221y(y);     /* X (x=1) */
 
   /* This case is not needed */
-  else if (absxy > 1.42857)                      region_unimplemented("C,D");
+  else if (absxy > 1.42857)   region_unimplemented("C,D");
 
   /* 0.7 < |x*y| < 1.42857 */
   else
     {
       if ( absx < 0.7)
         return li22re_smalla(x,y); /* Ea (diagonal) */
-      else if (absy < 0.7)     region_unimplemented("Eb (diagonal+stuffle)");
+      else if (absy < 0.7)    region_unimplemented("Eb (diagonal+stuffle)");
       else if (absx > 10./7.) region_unimplemented("Ec (diagonal+inversion)");
       else if (absy > 10./7.) region_unimplemented("Ed (diagonal+inv+st)");
 

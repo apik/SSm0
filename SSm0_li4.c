@@ -254,7 +254,7 @@ double SSm0_li4logA1(double a)
 {
   double x = -log(a);
   double xsq = x*x;
-  return WTFccli4logA10 + xsq*(WTFccli4logA12 + xsq*WTFccli4logA14 + x*WTFccli4logA1log*log(x)) + SSm0_li4logA1rec(x, 0, xsq);
+  return WTFccli4logA10 + xsq*(WTFccli4logA12 + xsq*WTFccli4logA14 + x*WTFccli4logA1log*log(fabs(x))) + SSm0_li4logA1rec(x, 0, xsq);
 }
 
 /* REAL version */
