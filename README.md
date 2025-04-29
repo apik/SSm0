@@ -4,6 +4,7 @@ Numerical implementation of the double-soft integral for massive-massless emitte
 ## Package structure
 ```
 /
+ |_ mmaSSm0                - Wolfram Library Link interface
  |_ tests
      |_ tests/IijEp0.dat   - quarks ep^1  term reference numbers
      |_ tests/IijEp-1.dat  - quarks ep^0  term reference numbers
@@ -87,4 +88,23 @@ one can compile and link it, assuming that the `SSm0` library can be found at `S
 ```
 $ gcc -I${SSM0PATH} useSSm0.c -L${SSM0PATH} -lSSm0 -lm
 ```
+
+## Wolfram Libray Link interface
+
+In the folder `mmaSSm0`, we provide a simple interface to Mathematica, which can be built with
+
+```
+$ cd mmaSSm0
+$ make
+```
+A simple test example for `x=0.2,y=0.3` can be run assuming that the Mathematica executable is `math` with
+```
+$ math -script test.m
+```
+
+More advanced example producing plots for `ep^1` parts of `\tilde{I}` and `\tilde{S}` can be run with
+```
+$ math -script plot.m
+```
+As a result, the two files `pltQQ.pdf` and `pltGG.pdf` should be produced
 
