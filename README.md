@@ -68,7 +68,7 @@ ep^ 0                      0.0184460303                      0.0147284599
 ep^ 1                      0.0847637908                      2.0817758455
 ```
 
-To use compiled library `libSSm0.a` in user the user program like one present bellow
+To use compiled library `libSSm0.a` in the user program like one present below
 ```C
 /* useSSm0.c */
 #include <stdio.h>
@@ -111,4 +111,8 @@ As a result, the two files `pltQQ.pdf` and `pltGG.pdf` should be produced
 
 ## References
 This implementation is based on the calculation performed in 
- - Dennis Horstmann, Kirill Melnikov, Ming-Ming Long and Andrey Pikelner. Integral of the double-emission eikonal function for a massive and a massless emitter at an arbitrary angle. [arXiv:2504.20977](https://arxiv.org/abs/2504.20977)
+
+*  *[Integral of the double-emission eikonal function for a massive and a massless emitter at an arbitrary angle.](https://arxiv.org/abs/2504.20977)  
+   By Dennis Horstmann, Kirill Melnikov, Ming-Ming Long and Andrey Pikelner.  
+   [arXiv:2504.20977]*  
+
