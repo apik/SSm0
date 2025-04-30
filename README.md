@@ -108,3 +108,7 @@ $ math -script plot.m
 ```
 As a result, the two files `pltQQ.pdf` and `pltGG.pdf` should be produced
 
+
+## References
+This implementation is based on the calculation performed in 
+ - Dennis Horstmann, Kirill Melnikov, Ming-Ming Long and Andrey Pikelner. Integral of the double-emission eikonal function for a massive and a massless emitter at an arbitrary angle. [arXiv:2504.20977](https://arxiv.org/abs/2504.20977)
